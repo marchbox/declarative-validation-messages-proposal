@@ -2,5 +2,49 @@
 <html lang="en">
 <meta charset="UTF-8">
 <title>Demo for validity-output custom built-in element</title>
+<style>
+  body {
+    font: 100% / 1.5 sans-serif;
+  }
+
+  button,
+  input,
+  select,
+  textarea,
+  output {
+    font: inherit;
+  }
+
+  .field {
+
+    label,
+    input,
+    select,
+    textarea,
+    output {
+      display: flow-root;
+    }
+  }
+</style>
+
 <h1><code>validity-output</code> custom built-in element</h1>
+
+<form>
+  <div class="field">
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required>
+    <output is="validity-output" for="email" validity="valuemissing"></output>
+  </div>
+  <p>
+    <button type="submit">Submit</button>
+  </p>
+</form>
+<script type="module">
+  import "./src/index.js";
+
+  document.forms[0].addEventListener("submit", evt => {
+    evt.preventDefault();
+    evt.target.reportValidity();
+  });
+</script>
 </html>
