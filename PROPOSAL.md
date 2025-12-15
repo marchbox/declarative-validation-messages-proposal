@@ -161,6 +161,8 @@ A new HTML element, `<error>`, as the container to display validation messages. 
 
 These questions applies to both proposals:
 
-* Should HTML elements be allowed as children, e.g. `<a>`, `<ul>`?
+* Should HTML elements be allowed as children, e.g. `<a>`, `<ul>`, for richer validation messages?
 * Should there be a declarative way to define multiple custom errors? For example, using regular expressions in an attribute like `pattern` or `match`?
-* Any cross shadow root issues that need to be address? Is the existing `ReferenceTarget` spec good enough?
+* Any cross shadow root issues that need to be address? Is the existing
+  [ReferenceTarget spec](https://github.com/WICG/webcomponents/blob/gh-pages/proposals/reference-target-explainer.md)
+  good enough?
