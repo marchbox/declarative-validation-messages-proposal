@@ -4,12 +4,14 @@
   "description": "An HTML custom built-in element to display validation messages in <output> elements.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "test": "playwright test"
   },
   "author": "zacky@marchbox.com",
   "license": "MIT",
   "type": "module",
   "devDependencies": {
+    "@playwright/test": "^1.57.0",
     "vite": "^7.2.4"
   }
 }
