@@ -1,7 +1,7 @@
 # Declarative validation messages proposal
 
 * Author: Zacky Ma <zacky@marchbox.com>, <zacky.ma@microsoft.com>
-* Last updated: 2025-09-01
+* Last updated: 2026-02-12
 
 ## Introduction
 
@@ -31,7 +31,7 @@ However, the current Constraint Validation API has a few shortcomings:
 In order to mark up declarative validation messages, I’m proposing 2 options:
 
 1. Enhancing the existing `<output>` element
-2. Add a new `<error>` element
+2. Add a new `<error>` element, or with a different name
 
 But both options share a similar set of mechanisms. I’ll illustrate the abstract mechanisms first, then detail the pros and cons of each option. We’ll use the term “display element” to represent the element that displays the validation messages, it could either be an `<output>` element or an `<error>` element.
 
@@ -57,7 +57,8 @@ But both options share a similar set of mechanisms. I’ll illustrate the abstra
 * The `clearedby` attribute
    * Similar to `closedby` attribute on `<dialog>`, it specifies the type of user actions needed to clear the validation message
    * `none`: the validation message can only be cleared with a developer-specific mechanism
-   * `input`: the validation message can be cleared if the user updates the associate form control’s value and the value is valid
+   * `input` (or `input-valid`): the validation message can be cleared if the user updates the associated form control’s value and the value is valid
+   * `input-any` (or `input`): the validation message can be cleared when the user updates the associated form control’s value, and it doesn’t require the value to be valid. Note that the element could display a validation message again when another validity check happens, e.g. the user clicks the submit button
 * If multiple *display elements* associated to the same form control meet the display content condition, all the display elements will have `:invalid` state enabled
 * If the associated form control element is disabled, add `:disabled` pseudo class to the *display element*
 
