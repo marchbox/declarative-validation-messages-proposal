@@ -33,7 +33,7 @@ In order to mark up declarative validation messages, I’m proposing 2 options:
 1. Enhancing the existing `<output>` element
 2. Add a new `<error>` element, or with a different name
 
-But both options share a similar set of mechanisms. I’ll illustrate the abstract mechanisms first, then detail the pros and cons of each option. We’ll use the term “display element” to represent the element that displays the validation messages, it could either be an `<output>` element or an `<error>` element.
+But both options share a similar set of mechanisms. I’ll illustrate the abstract mechanisms first, then detail the pros and cons of each option. I’ll use the term “display element” to represent the element that displays the validation messages, it could either be an `<output>` element or an `<error>` element.
 
 ### How it works
 
@@ -58,7 +58,7 @@ But both options share a similar set of mechanisms. I’ll illustrate the abstra
    * Similar to `closedby` attribute on `<dialog>`, it specifies the type of user actions needed to clear the validation message
    * `none`: the validation message can only be cleared with a developer-specific mechanism
    * `input` (or `input-valid`): the validation message can be cleared if the user updates the associated form control’s value and the value is valid
-   * `input-any` (or `input`): the validation message can be cleared when the user updates the associated form control’s value, and it doesn’t require the value to be valid. Note that the element could display a validation message again when another validity check happens, e.g. the user clicks the submit button
+   * `input-any` (or `input`): the validation message can be cleared when the user updates the associated form control’s value, and it doesn’t require the value to be valid. Note that the *display element* could display a validation message again when another validity check happens, e.g. the user clicks the submit button
 * If multiple *display elements* associated to the same form control meet the display content condition, all the display elements will have `:invalid` state enabled
 * If the associated form control element is disabled, add `:disabled` pseudo class to the *display element*
 
@@ -147,7 +147,7 @@ The presence of the `validity` attribute opts in the `<output>` element for disp
 
 * How does the Constraint Validation API work on an `<output>`, e.g. what does it do by calling `reportValidity()` on a `HTMLOutputElement`? And how does the new additions affect that?
 * `HTMLOutputElement` has a `validity` property, is it confusing that it gains `validity` attribute and `validityList` property?
-* Should an `<output>` be allowed to associate with multiple form controls when `validity` attribute is present?
+* Currently the `for` attribute can associate an `<output>` with multiple form controls, should an `<output>` be allowed to associate with multiple form controls when `validity` attribute is present? If not, is it confusing? If yes, which validation message to display if multiple associated form controls are invalid.
 
 
 ## Proposal 2: New `<error>` element
