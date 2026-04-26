@@ -1,35 +1,37 @@
 {
-  "name": "validity-output",
-  "version": "0.0.1",
-  "description": "An HTML custom built-in element to display validation messages in <output> elements.",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "test": "playwright test"
-  },
-  "type": "module",
-  "devDependencies": {
-    "@playwright/test": "^1.57.0",
-    "vite": "^7.2.4"
-  },
-  "keywords": [
-    "html",
-    "form",
-    "web components",
-    "custom elements",
-    "javascript"
-  ],
-  "author": {
-    "email": "zacky@marchbox.com",
-    "name": "Zacky Ma"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/marchbox/declarative-validation-messages-proposal/issues",
-    "email": "zacky@marchbox.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marchbox/declarative-validation-messages-proposal.git"
-  }
+	"name": "validity-output",
+	"version": "0.0.1",
+	"description": "An HTML custom built-in element to display validation messages in <output> elements.",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"test": "playwright test",
+		"format": "biome check --write"
+	},
+	"type": "module",
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.13",
+		"@playwright/test": "^1.59.1",
+		"vite": "^8.0.10"
+	},
+	"keywords": [
+		"html",
+		"form",
+		"web components",
+		"custom elements",
+		"javascript"
+	],
+	"author": {
+		"email": "zacky@marchbox.com",
+		"name": "Zacky Ma"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/marchbox/declarative-validation-messages-proposal/issues",
+		"email": "zacky@marchbox.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/marchbox/declarative-validation-messages-proposal.git"
+	}
 }

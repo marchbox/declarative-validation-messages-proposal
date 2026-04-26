@@ -1,0 +1,40 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.13/schema.json",
+	"files": {
+		"includes": [
+			"./src/**",
+			"./tests/**",
+			"./*.{html,js,json}",
+			"!./package-lock.json"
+		]
+	},
+	"formatter": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true
+	},
+	"assist": {
+		"enabled": true
+	},
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "asNeeded"
+		}
+	},
+	"css": {
+		"formatter": {
+			"enabled": true
+		}
+	},
+	"html": {
+		"experimentalFullSupportEnabled": true,
+		"formatter": {
+			"enabled": true,
+			"indentScriptAndStyle": true
+		},
+		"parser": {
+			"interpolation": true
+		}
+	}
+}

@@ -47,7 +47,7 @@ const VALIDITIES = [
  * @enum {string}
  */
 const ReportBy = {
-	// The ouput element displays and clears the validation message, if any, when
+	// The output element displays and clears the validation message, if any, when
 	// its associated form control element receives an `input` event and when its
 	// associated form element receives a `submit` event.
 	ANY: "any",
@@ -69,9 +69,9 @@ export class ValidityOutput extends HTMLOutputElement {
 
 	#abort = new AbortController();
 	#control;
-  #validityList = new FakeDOMTokenList({
-  	supportedTokens: VALIDITIES,
-  });
+	#validityList = new FakeDOMTokenList({
+		supportedTokens: VALIDITIES,
+	});
 
 	/**
 	 * The associated form control element.
@@ -93,7 +93,7 @@ export class ValidityOutput extends HTMLOutputElement {
 
 	/**
 	 * The validites that the output element displays the validation message for.
-	 * it’s a space-seperated list of strings that match the Constraint Validation
+	 * it’s a space-separated list of strings that match the Constraint Validation
 	 * API’s `ValidityState` keys, but in all-lower case.
 	 *
 	 * @attr validity
@@ -103,13 +103,13 @@ export class ValidityOutput extends HTMLOutputElement {
 
 	/**
 	 * A `DOMTokenList` that represents a list of valid values in the `validity`
-	 * attribute seperated by whitespaces.
+	 * attribute separated by whitespaces.
 	 * @type {DOMTokenList}
 	 * @readonly
 	 */
 	get validityList() {
 		return this.#validityList;
-	};
+	}
 
 	disconnectedCallback() {
 		this.#abort.abort();
@@ -144,7 +144,7 @@ export class ValidityOutput extends HTMLOutputElement {
 
 		this.#control.addEventListener(
 			"invalid",
-			(evt) => {
+			evt => {
 				evt.preventDefault();
 				if (!this.#control) {
 					return;
