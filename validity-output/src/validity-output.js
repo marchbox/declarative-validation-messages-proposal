@@ -67,8 +67,22 @@ export class ValidityOutput extends HTMLOutputElement {
 		return ["for", "validity", "reportedby"];
 	}
 
+	/**
+	 * AbortController for aborting upon element disconnection.
+	 * @type {AbortController}
+	 */
 	#abort = new AbortController();
-	#control;
+
+	/**
+	 * Reference to the associated control element.
+	 * @type {?WeakRef<FormControl>}
+	 */
+	#controlRef = null;
+
+	/**
+	 * A DOMTokenList of the provided validities.
+	 * @type {DOMTokenList}
+	 */
 	#validityList = new FakeDOMTokenList({
 		supportedTokens: VALIDITIES,
 	});
@@ -79,7 +93,10 @@ export class ValidityOutput extends HTMLOutputElement {
 	 * @readonly
 	 */
 	get control() {
-		return this.#control;
+		if (!this.#controlRef?.deref()?.isConnected) {
+			this.#controlRef = null;
+		}
+		return this.#controlRef?.deref();
 	}
 
 	/**
@@ -87,7 +104,7 @@ export class ValidityOutput extends HTMLOutputElement {
 	 *
 	 * @attr reportedby
 	 * @default ReportedBy.SUBMIT
-	 * @type {ReportedBy=}
+	 * @type {ReportedBy}
 	 */
 	reportedBy = ReportedBy.SUBMIT;
 
@@ -97,7 +114,7 @@ export class ValidityOutput extends HTMLOutputElement {
 	 * API’s `ValidityState` keys, but in all-lower case.
 	 *
 	 * @attr validity
-	 * @type {Validity=}
+	 * @type {Validity}
 	 */
 	validity = "";
 
@@ -122,7 +139,9 @@ export class ValidityOutput extends HTMLOutputElement {
 
 		switch (name) {
 			case "for":
-				this.#control = this.getRootNode().getElementById(this.htmlFor);
+				this.#controlRef = new WeakRef(
+					this.getRootNode().getElementById(this.htmlFor),
+				);
 				this.#listenControlInvalid();
 				break;
 			case "validity":
@@ -138,23 +157,23 @@ export class ValidityOutput extends HTMLOutputElement {
 	}
 
 	#listenControlInvalid() {
-		if (!this.#control) {
+		if (!this.control?.isConnected) {
 			return;
 		}
 
-		this.#control.addEventListener(
+		this.control.addEventListener(
 			"invalid",
 			evt => {
 				evt.preventDefault();
-				if (!this.#control) {
+				if (!this.control?.isConnected) {
 					return;
 				}
-				this.value = this.#control.validationMessage;
+				this.value = this.control.validationMessage;
 			},
 			{ signal: this.#abort.signal },
 		);
 
-		this.#control.addEventListener(
+		this.control.addEventListener(
 			"input",
 			() => {
 				this.value = "";
