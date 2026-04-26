@@ -36,12 +36,5 @@
 		</div>
 		<p><button type="submit">Submit</button></p>
 	</form>
-	<script type="module">
-		import "./src/index.js";
-
-		document.forms[0].addEventListener("submit", evt => {
-			evt.preventDefault();
-			evt.target.reportValidity();
-		});
-	</script>
+	<script type="module" src="./src/index.js"></script>
 </html>
