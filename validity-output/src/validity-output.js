@@ -1,66 +1,13 @@
+import {
+	ReportedBy,
+	VALIDITIES,
+	ValidityToValidityState,
+} from "./constants.js";
 import { FakeDOMTokenList } from "./dom-token-list.js";
 
 /**
- * @typedef {(HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)} FormControl
+ * @import { FormControl, Validity } from "./constants.js"
  */
-
-/**
- * @typedef {(
- *   | "badinput"
- *   | "customerror"
- *   | "patternmismatch"
- *   | "rangeoverflow"
- *   | "rangeunderflow"
- *   | "stepmismatch"
- *   | "toolong"
- *   | "tooshort"
- *   | "typemismatch"
- *   | "valid"
- *   | "valuemissing"
- * )} Validity
- */
-
-/**
- * The built-in validities.
- *
- * @type {Validity[]}
- * @constant
- */
-const VALIDITIES = [
-	"badinput",
-	"customerror",
-	"patternmismatch",
-	"rangeoverflow",
-	"rangeunderflow",
-	"stepmismatch",
-	"toolong",
-	"tooshort",
-	"typemismatch",
-	"valid",
-	"valuemissing",
-];
-
-/**
- * Options for the `reportedby` attribute or the `reportedBy` property.
- *
- * @readonly
- * @enum {string}
- */
-const ReportedBy = {
-	// The output element displays and clears the validation message, if any, when
-	// its associated form control element receives an `input` event and when its
-	// associated form element receives a `submit` event.
-	ANY: "any",
-
-	// The output element only displays and clears the validation message, if any,
-	// when its associated form element receives a `submit` event.
-	SUBMIT: "submit",
-
-	// The output element only displays and clears the validation message, if any,
-	// when its `reportValidity()` method is called with a developer-specified
-	// mechanism.
-	NONE: "none",
-};
 
 export class ValidityOutput extends HTMLOutputElement {
 	static get observedAttributes() {
@@ -146,7 +93,7 @@ export class ValidityOutput extends HTMLOutputElement {
 				break;
 			case "validity":
 				this.validity = next;
-				this.#validityList.value = next;
+				this.validityList.value = next;
 				break;
 			case "reportedby":
 				this.reportedBy = Object.values(ReportedBy).includes(next)
@@ -168,7 +115,7 @@ export class ValidityOutput extends HTMLOutputElement {
 				if (!this.control?.isConnected) {
 					return;
 				}
-				this.value = this.control.validationMessage;
+				this.value = this.#getControlValidationMessage();
 			},
 			{ signal: this.#abort.signal },
 		);
@@ -176,9 +123,30 @@ export class ValidityOutput extends HTMLOutputElement {
 		this.control.addEventListener(
 			"input",
 			() => {
-				this.value = "";
+				if (this.reportedBy === ReportedBy.ANY) {
+					this.value = "";
+				}
 			},
 			{ signal: this.#abort.signal },
 		);
+	}
+
+	#getControlValidationMessage() {
+		let message = "";
+
+		if (this.validityList.length) {
+			for (const v of this.validityList.values()) {
+				if (
+					this.control.validity[ValidityToValidityState[v.toLowerCase()]]
+				) {
+					message = this.control.validationMessage;
+					break;
+				}
+			}
+		} else {
+			message = this.control.validationMessage;
+		}
+
+		return message;
 	}
 }

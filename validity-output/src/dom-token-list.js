@@ -34,7 +34,7 @@ export class FakeDOMTokenList {
 	 */
 	supports(token) {
 		return this.#supported.length
-			? this.#supported.includes(token)
+			? this.#supported.map(s => s.toLowerCase()).includes(token.toLowerCase())
 			: this.#list.supports(token);
 	}
 
