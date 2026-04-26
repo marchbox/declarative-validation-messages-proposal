@@ -38,6 +38,7 @@ But both options share a similar set of mechanisms. I’ll illustrate the abstra
 ### How it works
 
 * The *display element* has a `for` attribute (and an `htmlFor` property) to declare the association between itself and a form control element
+    * If the `for` attribute has multiple whitespace-separated values, only the first value that is a valid IDREF (an element with the ID currently exists in the DOM) would establish the association
     * When the associated form control element is invalid, browser should add the *display element* to its  `ariaErrorMessageElements` property
 * The `validity` attribute
     * Authors can provide a list of space-separated strings as its value, to represent which built-in validities’ validation messages the element should display. The names of the built-in validities are case insensitive, e.g. `valueMissing` can be represented as `valueMissing` or `valuemissing` in the attribute value
@@ -53,14 +54,14 @@ But both options share a similar set of mechanisms. I’ll illustrate the abstra
    | Text | (Ignored) | Always `customError` | Author’s text content |
 
 * Supports `:valid` and `:invalid` pseudo classes.
-    * The `:invalid` pseudo class is added when the associated form control element has :invalid` added
+    * The `:invalid` pseudo class is added when the associated form control element has `:invalid` added
 * The `reportedby` attribute
    * Similar to `closedby` attribute on `<dialog>`, it specifies the type of user actions needed to display or clear the validation message
 	 * `any`: when its associated form control element receives an `input` event and when its associated form element receives a `submit` event
 	 * `submit`: when its associated form element receives a `submit` event, this is the default value
    * `none`: when its `reportValidity()` method is called with a developer-specified mechanism.
 	NONE: "none",
-* If multiple *display elements* associated to the same form control meet the display content condition, all the display elements will have `:invalid` state enabled
+* If multiple *display elements* associated to the same form control that meet the display content condition, all the display elements will have `:invalid` state enabled
 * If the associated form control element is disabled, add `:disabled` pseudo class to the *display element*
 
 ### Examples
@@ -163,6 +164,7 @@ A new HTML element, `<error>`, as the container to display validation messages. 
 
 These questions applies to both proposals:
 
+* Should an `<output validity>` be able to associate with multiple form control elements? How would it work when the associated form control elements have conflict validities?
 * Should HTML elements be allowed as children, e.g. `<a>`, `<ul>`, for richer validation messages?
 * Should there be a declarative way to define multiple custom errors? For example, using regular expressions in an attribute like `pattern` or `match`?
 * Any cross shadow root issues that need to be address? Is the existing
