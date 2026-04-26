@@ -41,12 +41,12 @@ const VALIDITIES = [
 ];
 
 /**
- * Options for the `reportby` attribute or the `reportBy` property.
+ * Options for the `reportedby` attribute or the `reportedBy` property.
  *
  * @readonly
  * @enum {string}
  */
-const ReportBy = {
+const ReportedBy = {
 	// The output element displays and clears the validation message, if any, when
 	// its associated form control element receives an `input` event and when its
 	// associated form element receives a `submit` event.
@@ -57,14 +57,14 @@ const ReportBy = {
 	SUBMIT: "submit",
 
 	// The output element only displays and clears the validation message, if any,
-	// when its `reportValidity{}` method is called with a developer-specified
+	// when its `reportValidity()` method is called with a developer-specified
 	// mechanism.
 	NONE: "none",
 };
 
 export class ValidityOutput extends HTMLOutputElement {
 	static get observedAttributes() {
-		return ["for", "validity", "reportby"];
+		return ["for", "validity", "reportedby"];
 	}
 
 	#abort = new AbortController();
@@ -85,11 +85,11 @@ export class ValidityOutput extends HTMLOutputElement {
 	/**
 	 * When the output element displays the validation message, if any.
 	 *
-	 * @attr reportby
-	 * @default ReportBy.SUBMIT
-	 * @type {ReportBy=}
+	 * @attr reportedby
+	 * @default ReportedBy.SUBMIT
+	 * @type {ReportedBy=}
 	 */
-	reportBy = ReportBy.SUBMIT;
+	reportedBy = ReportedBy.SUBMIT;
 
 	/**
 	 * The validites that the output element displays the validation message for.
@@ -129,10 +129,10 @@ export class ValidityOutput extends HTMLOutputElement {
 				this.validity = next;
 				this.#validityList.value = next;
 				break;
-			case "reportby":
-				this.reportBy = Object.values(ReportBy).includes(next)
+			case "reportedby":
+				this.reportedBy = Object.values(ReportedBy).includes(next)
 					? next
-					: ReportBy.SUBMIT;
+					: ReportedBy.SUBMIT;
 				break;
 		}
 	}

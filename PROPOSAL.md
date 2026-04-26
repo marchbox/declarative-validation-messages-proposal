@@ -54,11 +54,12 @@ But both options share a similar set of mechanisms. I’ll illustrate the abstra
 
 * Supports `:valid` and `:invalid` pseudo classes.
     * The `:invalid` pseudo class is added when the associated form control element has :invalid` added
-* The `clearedby` attribute
-   * Similar to `closedby` attribute on `<dialog>`, it specifies the type of user actions needed to clear the validation message
-   * `none`: the validation message can only be cleared with a developer-specific mechanism
-   * `input` (or `input-valid`): the validation message can be cleared if the user updates the associated form control’s value and the value is valid
-   * `input-any` (or `input`): the validation message can be cleared when the user updates the associated form control’s value, and it doesn’t require the value to be valid. Note that the *display element* could display a validation message again when another validity check happens, e.g. the user clicks the submit button
+* The `reportedby` attribute
+   * Similar to `closedby` attribute on `<dialog>`, it specifies the type of user actions needed to display or clear the validation message
+	 * `any`: when its associated form control element receives an `input` event and when its associated form element receives a `submit` event
+	 * `submit`: when its associated form element receives a `submit` event, this is the default value
+   * `none`: when its `reportValidity()` method is called with a developer-specified mechanism.
+	NONE: "none",
 * If multiple *display elements* associated to the same form control meet the display content condition, all the display elements will have `:invalid` state enabled
 * If the associated form control element is disabled, add `:disabled` pseudo class to the *display element*
 
