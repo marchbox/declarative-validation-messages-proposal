@@ -7,14 +7,29 @@
     "build": "vite build",
     "test": "playwright test"
   },
+  "type": "module",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "vite": "^7.2.4"
+  },
+  "keywords": [
+    "html",
+    "form",
+    "web components",
+    "custom elements",
+    "javascript"
+  ],
   "author": {
     "email": "zacky@marchbox.com",
     "name": "Zacky Ma"
   },
   "license": "MIT",
-  "type": "module",
-  "devDependencies": {
-    "@playwright/test": "^1.57.0",
-    "vite": "^7.2.4"
+  "bugs": {
+    "url": "https://github.com/marchbox/declarative-validation-messages-proposal/issues",
+    "email": "zacky@marchbox.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marchbox/declarative-validation-messages-proposal.git"
   }
 }
