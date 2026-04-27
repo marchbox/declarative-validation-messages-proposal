@@ -35,6 +35,12 @@ export class ValidityOutput extends HTMLOutputElement {
 	});
 
 	/**
+	 * The messaged from the <template> child’s content.
+	 * @type {string}
+	 */
+	#templateMessage = "";
+
+	/**
 	 * The associated form control element.
 	 * @type {?FormControl}
 	 * @readonly
@@ -73,6 +79,17 @@ export class ValidityOutput extends HTMLOutputElement {
 	 */
 	get validityList() {
 		return this.#validityList;
+	}
+
+	connectedCallback() {
+		if (!this.textContent.trim()) {
+			const template = this.querySelector("template");
+			if (template) {
+				this.#templateMessage = template.content
+					.cloneNode(true)
+					.textContent.trim();
+			}
+		}
 	}
 
 	disconnectedCallback() {
@@ -131,22 +148,23 @@ export class ValidityOutput extends HTMLOutputElement {
 		);
 	}
 
+	/** @returns {string} */
 	#getControlValidationMessage() {
-		let message = "";
+		const message =
+			this.#templateMessage || this.control.validationMessage || "";
+		let shouldDisplay = false;
 
 		if (this.validityList.length) {
 			for (const v of this.validityList.values()) {
-				if (
-					this.control.validity[ValidityToValidityState[v.toLowerCase()]]
-				) {
-					message = this.control.validationMessage;
+				if (this.control.validity[ValidityToValidityState[v.toLowerCase()]]) {
+					shouldDisplay = true;
 					break;
 				}
 			}
 		} else {
-			message = this.control.validationMessage;
+			shouldDisplay = true;
 		}
 
-		return message;
+		return shouldDisplay ? message : "";
 	}
 }
