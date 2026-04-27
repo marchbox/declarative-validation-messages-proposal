@@ -4,6 +4,7 @@ import { setContent } from "./utils.js";
 test("should display any built-in validation messages", async ({ page }) => {
 	const input = page.getByTestId("input");
 	const output = page.getByTestId("output");
+	const submitter = page.getByTestId("submitter");
 
 	await setContent(
 		page,
@@ -22,11 +23,12 @@ test("should display any built-in validation messages", async ({ page }) => {
         validity
         data-testid="output"
       ></output>
+      <button data-testid="submitter">submit</button>
     </form>
 	  `,
 	);
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output).toHaveText(
 		await input.evaluate(node => node.validationMessage),
@@ -34,7 +36,7 @@ test("should display any built-in validation messages", async ({ page }) => {
 
 	await input.fill("invalidemail");
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output).toHaveText(
 		await input.evaluate(node => node.validationMessage),
@@ -46,6 +48,7 @@ test("should display built-in validation message for given validity", async ({
 }) => {
 	const input = page.getByTestId("input");
 	const output = page.getByTestId("output");
+	const submitter = page.getByTestId("submitter");
 
 	await setContent(
 		page,
@@ -64,11 +67,12 @@ test("should display built-in validation message for given validity", async ({
         validity="valuemissing"
         data-testid="output"
       ></output>
+      <button data-testid="submitter">submit</button>
     </form>
 	  `,
 	);
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output).toHaveText(
 		await input.evaluate(node => node.validationMessage),
@@ -76,7 +80,7 @@ test("should display built-in validation message for given validity", async ({
 
 	await input.fill("invalidemail");
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output).toHaveText("");
 });
@@ -86,6 +90,7 @@ test("should display built-in validation messages for given validities", async (
 }) => {
 	const input = page.getByTestId("input");
 	const output = page.getByTestId("output");
+	const submitter = page.getByTestId("submitter");
 
 	await setContent(
 		page,
@@ -104,11 +109,12 @@ test("should display built-in validation messages for given validities", async (
         validity="valuemissing typemismatch"
         data-testid="output"
       ></output>
+      <button data-testid="submitter">submit</button>
     </form>
 	  `,
 	);
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output).toHaveText(
 		await input.evaluate(node => node.validationMessage),
@@ -116,7 +122,7 @@ test("should display built-in validation messages for given validities", async (
 
 	await input.fill("invalidemail");
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output).toHaveText(
 		await input.evaluate(node => node.validationMessage),
@@ -127,6 +133,7 @@ test("should display custom message from the <template> child", async ({
 	page,
 }) => {
 	const output = page.getByTestId("output");
+	const submitter = page.getByTestId("submitter");
 
 	await setContent(
 		page,
@@ -147,11 +154,12 @@ test("should display custom message from the <template> child", async ({
       >
       	<template>Something went wrong</template>
       </output>
+      <button data-testid="submitter">submit</button>
     </form>
 	  `,
 	);
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output).toHaveText("Something went wrong");
 });
@@ -160,6 +168,7 @@ test("should display custom message from the first <template> child", async ({
 	page,
 }) => {
 	const output = page.getByTestId("output");
+	const submitter = page.getByTestId("submitter");
 
 	await setContent(
 		page,
@@ -181,11 +190,12 @@ test("should display custom message from the first <template> child", async ({
       	<template>Something went wrong</template>
       	<template>Should not be displayed</template>
       </output>
+      <button data-testid="submitter">submit</button>
     </form>
 	  `,
 	);
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output).toHaveText("Something went wrong");
 });
@@ -194,6 +204,7 @@ test("should display custom message for given validities", async ({ page }) => {
 	const input = page.getByTestId("input");
 	const output1 = page.getByTestId("output-valuemissing");
 	const output2 = page.getByTestId("output-typemismatch");
+	const submitter = page.getByTestId("submitter");
 
 	await setContent(
 		page,
@@ -222,18 +233,19 @@ test("should display custom message for given validities", async ({ page }) => {
       >
       	<template>type mismatch</template>
       </output>
+      <button data-testid="submitter">submit</button>
     </form>
 	  `,
 	);
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output1).toHaveText("value missing");
 	await expect(output2).toHaveText("");
 
 	await input.fill("invalidemail");
 
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
 	await expect(output1).toHaveText("");
 	await expect(output2).toHaveText("type mismatch");
@@ -242,11 +254,9 @@ test("should display custom message for given validities", async ({ page }) => {
 test("should display custom message from the <output> content", async ({
 	page,
 }) => {
-	test.fixme();
-
 	const input = page.getByTestId("input");
 	const output = page.getByTestId("output");
-	const form = page.locator("form");
+	const submitter = page.getByTestId("submitter");
 
 	await setContent(
 		page,
@@ -267,6 +277,7 @@ test("should display custom message from the <output> content", async ({
       >
       	Something went wrong
       </output>
+      <button data-testid="submitter">submit</button>
     </form>
 	  `,
 	);
@@ -274,7 +285,9 @@ test("should display custom message from the <output> content", async ({
 	await expect(output).toHaveText("Something went wrong");
 
 	await input.fill("user@example.com");
-	await form.evaluate(node => node.reportValidity());
+	await submitter.click();
 
-	await expect(output).toHaveText("");
+	await expect(page).toHaveURL(
+		new URLPattern({ search: "email=user%40example.com" }),
+	);
 });
