@@ -53,7 +53,7 @@ But both options share a similar set of mechanisms. I’ll illustrate the abstra
    | `<template>` | Yes | Matching `validity` attribute | The `<template>`’s content |
    | Text | (Ignored) | Always `customError` | Author’s text content |
 
-* When the *display element* has custom message, its associated form control element will not have `customError` validity, unlike what the current `setCustomValidity()` method does
+* When the *display element* has custom message, its associated form control element will not have `customError` validity, unlike what the current `setCustomValidity()` method does. However, the form control’s `validationMessage` should return the custom message set by the *display element*
 * Supports `:valid` and `:invalid` pseudo classes.
     * The `:invalid` pseudo class is added when the associated form control element has `:invalid` added
 * The `reportedby` attribute
