@@ -53,6 +53,7 @@ But both options share a similar set of mechanisms. I’ll illustrate the abstra
    | `<template>` | Yes | Matching `validity` attribute | The `<template>`’s content |
    | Text | (Ignored) | Always `customError` | Author’s text content |
 
+* When the *display element* has custom message, its associated form control element will not have `customError` validity, unlike what the current `setCustomValidity()` method does
 * Supports `:valid` and `:invalid` pseudo classes.
     * The `:invalid` pseudo class is added when the associated form control element has `:invalid` added
 * The `reportedby` attribute
@@ -140,7 +141,7 @@ In [HTML spec](https://html.spec.whatwg.org/multipage/form-elements.html#the-out
 Additionally, the `<output>` element has a few existing features that aligns well with the functions of validation messages:
 
 * The `for` attribute and `htmlFor` property for associating with form control elements
-* It’s a live region, the content changes will be announced by Assistive Technology softwares
+* It’s a live region, the content changes will be announced by Assistive Technology software
 * It accepts phrasing content that can be used for server rendered validation messages
 
 The presence of the `validity` attribute opts in the `<output>` element for displaying validation messages, and gives the element an implicit ARIA role of `alert`. The attribute can be a boolean type or a string type.
