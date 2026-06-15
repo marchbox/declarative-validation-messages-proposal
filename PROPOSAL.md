@@ -1,7 +1,7 @@
 # Declarative validation messages proposal
 
-* Author: Zacky Ma <zacky@marchbox.com>, <zacky.ma@microsoft.com>
-* Last updated: 2026-02-12
+* Author: Zacky Ma <zacky@marchbox.com>
+* Last updated: 2026-06-14
 
 ## Introduction
 
@@ -26,7 +26,17 @@ However, the current Constraint Validation API has a few shortcomings:
 
 ==TODO==
 
-## Abstract proposal
+## Proposal: enhancing the `<output>` element
+
+In [HTML spec](https://html.spec.whatwg.org/multipage/form-elements.html#the-output-element), the `<output>` element is defined as “the result of a calculation performed by the application, or the result of a user action”. “The result of a user action“ aligns well with the semantic of validation messages. [Some developers](https://denodell.com/blog/html-best-kept-secret-output-tag) already expect this functionality from the `<output>` element.
+
+Additionally, the `<output>` element has a few existing features that aligns well with the functions of validation messages:
+
+* The `for` attribute and `htmlFor` property for associating with form control elements
+* It’s a live region, the content changes will be announced by Assistive Technology software
+* It accepts phrasing content that can be used for server rendered validation messages
+
+The presence of the `validity` attribute opts in the `<output>` element for displaying validation messages, and gives the element an implicit ARIA role of `alert`. The attribute can be a boolean type or a string type.
 
 In order to mark up declarative validation messages, I’m proposing 2 options:
 
@@ -67,32 +77,30 @@ But both options share a similar set of mechanisms. I’ll illustrate the abstra
 
 ### Examples
 
-The `<display-element>` in the example code represents either an `<output>` element or an `<error>` element. When it repreents an `<output>` element, the `validity` attribute should always be present.
-
 Display any built-in validation message:
 
 ```html
 <label for="email">Email</label>
-<input name="email" id="email" placeholder="foo@bar.com">
-<display-element for="email" validity></display-element>
+<input name="email" id="email">
+<output for="email" validity></output>
 ```
 
 Display specific built-in validation messages:
 
 ```html
 <label for="email">Email</label>
-<input name="email" id="email" placeholder="foo@bar.com">
-<display-element for="email" validity="valuemissing typemismatch"></display-element>
+<input name="email" id="email">
+<output for="email" validity="valuemissing typemismatch"></output>
 ```
 
 Display a custom validation message for any validity:
 
 ```html
 <label for="email">Email</label>
-<input name="email" id="email" placeholder="foo@bar.com">
-<display-element for="email">
+<input name="email" id="email">
+<output for="email">
   <template>Something is wrong</template>
-</display-element>
+</output>
 ```
 
 Display custom validation messages for specific validities:
@@ -100,18 +108,18 @@ Display custom validation messages for specific validities:
 ```html
 <label for="email">Email</label>
 <input name="email" id="email" placeholder="foo@bar.com">
-<display-element
+<output
   for="email"
   validity="valuemissing"
 >
   <template>Fill the email to help us contact you.</template>
-</display-element>
-<display-element
+</output>
+<output
   for="email"
   validity="typemismatch"
 >
   <template>Use a valid email.</template>
-</display-element>
+</output>
 ```
 
 Display a custom server rendered validation message:
@@ -119,9 +127,9 @@ Display a custom server rendered validation message:
 ```html
 <label for="email">Email</label>
 <input name="email" id="email" placeholder="foo@bar.com">
-<display-element for="email">
+<output for="email">
   Something wrong from the server-side.
-</display-element>
+</output>
 ```
 
 Display a built-in server rendered validation message:
@@ -129,22 +137,10 @@ Display a built-in server rendered validation message:
 ```html
 <label for="email">Email</label>
 <input name="email" id="email" placeholder="foo@bar.com">
-<display-element for="email" validity="typemismatch">
+<output for="email" validity="typemismatch">
   Enter a valid email address.
-</display-element>
+</output>
 ```
-
-## Proposal 1: Enhancing the `<output>` element
-
-In [HTML spec](https://html.spec.whatwg.org/multipage/form-elements.html#the-output-element), the `<output>` element is defined as “the result of a calculation performed by the application, or the result of a user action”. “The result of a user action“ aligns well with the semantic of validation messages. [Some developers](https://denodell.com/blog/html-best-kept-secret-output-tag) already expect this functionality from the `<output>` element.
-
-Additionally, the `<output>` element has a few existing features that aligns well with the functions of validation messages:
-
-* The `for` attribute and `htmlFor` property for associating with form control elements
-* It’s a live region, the content changes will be announced by Assistive Technology software
-* It accepts phrasing content that can be used for server rendered validation messages
-
-The presence of the `validity` attribute opts in the `<output>` element for displaying validation messages, and gives the element an implicit ARIA role of `alert`. The attribute can be a boolean type or a string type.
 
 ### Pending questions
 
@@ -153,15 +149,11 @@ The presence of the `validity` attribute opts in the `<output>` element for disp
 * Currently the `for` attribute can associate an `<output>` with multiple form controls, should an `<output>` be allowed to associate with multiple form controls when `validity` attribute is present? If not, is it confusing? If yes, which validation message to display if multiple associated form controls are invalid.
 
 
-## Proposal 2: New `<error>` element
+## Alternative proposal: new `<error>` element
 
-A new HTML element, `<error>`, as the container to display validation messages. It doesn’t come with any existing semantics and functionalities that may be conflict with the new features.
+A new HTML element might be more desired if reusing `<output>` creates too many backward compatibility issues.
 
-### Pending questions
-
-* Alternative names: `<formerror>`, `<validationmessage>`
-
-## Other pending questions
+## Pending questions
 
 These questions applies to both proposals:
 
